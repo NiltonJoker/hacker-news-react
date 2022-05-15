@@ -1,0 +1,60 @@
+.hacker__nav {
+  /* border: 1px solid red; */
+  min-height: 114px;
+  margin: 0 0 70px;
+  padding: 44px 150px;
+  box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
+  background-image: linear-gradient(to bottom, #ececec -32%, #fff 124%);
+}
+
+.hacker__nav-branding {
+  display: block;
+  width: 100%;
+  font-size: 28px;
+  text-align: left;
+  text-transform: uppercase;
+  font-family: Baskervville;
+  line-height: 1;
+  color: '#3b3b3b';
+}
+
+.hacker__section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* gap: 12px; */
+}
+.hacker__section-item {
+  width: 98px;
+  height: 31px;
+  padding: 3px 0px;
+  border-radius: 2px;
+  border: 1px solid #d6d6d6;
+  color: #606060;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.hacker__section-item.active {
+  border: solid 1px var(--azure);
+  color: var(--azure);
+}
+
+.hacker__section-item span {
+  display: block;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .hacker__nav {
+    padding: 44px 20px;
+  }
+  .hacker__nav-branding{
+    text-align: center;
+  }
+}
