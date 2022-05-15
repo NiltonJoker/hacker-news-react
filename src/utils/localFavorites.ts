@@ -15,6 +15,17 @@ export const toggleFavorite = (post: Hit) => {
     );
   }
 
+  favorites = favorites.map(
+    ({ author, story_url, story_title, created_at, objectID }) =>
+      ({
+        author,
+        story_url,
+        story_title,
+        created_at,
+        objectID,
+      } as Hit)
+  );
+
   localStorage.setItem("favorites", JSON.stringify(favorites));
 };
 
@@ -39,21 +50,21 @@ interface FavPostsResponse {
 
 const posts = (page = -1): FavPostsResponse => {
   const favPosts = JSON.parse(localStorage.getItem("favorites") || "[]");
-  const itemsPerPage = 12
-  if( page === -1 ){
+  const itemsPerPage = 12;
+  if (page === -1) {
     return {
       maxPage: Math.ceil(favPosts.length / itemsPerPage),
-      posts: favPosts
-    }
+      posts: favPosts,
+    };
   }
 
-  const finalItemPerPage = ((page + 1) * itemsPerPage);
+  const finalItemPerPage = (page + 1) * itemsPerPage;
 
-  const favPostsByPage = favPosts.slice(0,  finalItemPerPage)
+  const favPostsByPage = favPosts.slice(0, finalItemPerPage);
 
   return {
     maxPage: Math.ceil(favPosts.length / itemsPerPage),
-    posts: favPostsByPage
+    posts: favPostsByPage,
   };
 };
 
