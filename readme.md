@@ -6,7 +6,7 @@ Using SWR and Infinite Scroll for requests, Context APi for global states and Ty
 
 
 ## Demo
-
+https://hackernews-react-api.netlify.app/
 ## Getting Started
 
 First, Install the dependencies:
