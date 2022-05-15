@@ -2,8 +2,10 @@ import { FC, useState, useContext } from 'react';
 import { Hit } from "../../interfaces";
 import { dateFuntions, localFavorites } from '../../utils';
 
-import NotFavoriteIcon from "/assets/no-favorite.svg";
-import FavoriteIcon from "/assets/favorite.svg";
+import NotFavoriteIcon from "../../images/no-favorite.svg";
+import FavoriteIcon from "../../images/favorite.svg";
+import { ClockIcon } from "../ui";
+
 import confetti from 'canvas-confetti';
 import { PostContext } from '../../context';
 interface Props {
@@ -47,7 +49,12 @@ export const PostCard:FC<Props> = ({ post }) => {
     <div className="post__card">
       <a href={post.story_url || '#'} target="_blank">
         <div className="post__card-body">
-          <p className="post__card-body__time">{dateFuntions.getFormatDistanceToNow(new Date(post.created_at), post.author)}</p>
+          <div className='post__card-body-group'>
+            <ClockIcon/>
+            <p className="post__card-body__time">
+              {dateFuntions.getFormatDistanceToNow(new Date(post.created_at), post.author)}
+            </p>
+          </div>
           <p>{post.story_title}</p>
         </div>
       </a>

@@ -16,7 +16,7 @@ const formatOptionLabel = (option: Option) => (
       <>
         <div
           style={{
-            backgroundImage: `url(/assets/${option.value}-icon.png)`,
+            backgroundImage: `url(./${option.value}-icon.png)`,
             width: "24px",
             height: "24px",
             backgroundPosition: "center",
