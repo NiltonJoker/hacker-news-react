@@ -1,13 +1,19 @@
-
-import { Layout } from './components/layouts'
-import AllPostPage from './pages/AllPostPage'
+import { useContext } from "react";
+import { Layout } from "./components/layouts";
+import { UIContext } from "./context";
+import AllPostPage from "./pages/AllPostPage";
+import { FavPostPage } from "./pages/FavPostPage";
 
 const App = () => {
+  const { pageActive } = useContext(UIContext);
+
   return (
     <Layout>
-       <AllPostPage/> 
-    </Layout>
-  )
-}
+      {pageActive === "all" && <AllPostPage />}
 
-export default App
+      {pageActive === "favs" && <FavPostPage />}
+    </Layout>
+  );
+};
+
+export default App;

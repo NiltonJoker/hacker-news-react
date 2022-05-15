@@ -32,7 +32,6 @@ const formatOptionLabel = (option: Option) => (
 
 export const CustomSelect: FC<Props> = ({ options, value, onChange }) => {
 
-  console.log('RERENDERSELECT')
   return (
     <div
       style={{

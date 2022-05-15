@@ -1,10 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { PostList } from "../components/posts";
-import { CustomSelectedMemorized } from "../components/ui";
+import { CustomSelectedMemorized, SpinnerLoading } from "../components/ui";
 import { BASE_API, SELECT_OPTIONS } from "../utils";
 import { Option } from "../types";
 import useSWRInfinite from "swr/infinite";
-import { ActionMeta } from "react-select";
+
 import { Hit, HitResponse } from "../interfaces";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -16,43 +16,80 @@ function AllPostPage() {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     pageIndex += 1;
-    if(previousPageData && previousPageData.length) return null
-    if(previousPageData?.nbPages === pageIndex) return null;
-  
-    return `${BASE_API}${queryParams}&page=${pageIndex}`;
+    if (previousPageData && previousPageData.length) return null;
+    if (previousPageData?.nbPages === pageIndex) return null;
+
+    return `${BASE_API}/search_by_date${queryParams}&page=${pageIndex}`;
   };
 
   const [optionSelected, setoptionSelected] = useState<Option>(
     SELECT_OPTIONS[0]
   );
 
-  const { data, error, size, setSize, isValidating } = useSWRInfinite<
-    HitResponse
-  >(getKey, fetcher);
+  const { data, error, size, setSize, isValidating } =
+    useSWRInfinite<HitResponse>(getKey, fetcher);
 
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
     isLoadingInitialData ||
     (isValidating && size > 1 && data && typeof data[size - 1] === "undefined");
 
-  const paginatedPosts = data?.flat()  || [];
-  const currentPosts = paginatedPosts.reduce<Hit[]>((prev,current) => [...prev, ...current.hits] ,[])
+  const currentPosts = useMemo(() => {
+    const paginatedPosts = data?.flat() || [];
+    return paginatedPosts.reduce<Hit[]>(
+      (prev, current) => [...prev, ...current.hits],
+      []
+    );
+  }, [data]);
 
-  const fetchMore = useCallback(() => {
+  const fetchMore = () => {
+
     if (isLoadingMore) return null;
 
     setSize((size) => size + 1);
-  }, [isLoadingMore, setSize]);
+  };
 
-  const onSelectedChange = useCallback(
-    (itemSelected: Option | null, actionMeta: ActionMeta<Option>) => {
-      if (!itemSelected) return;
+  const onSelectedChange = useCallback((itemSelected: Option | null) => {
+    if (!itemSelected) return;
 
-      setQueryParams(`?query=${itemSelected.value}`);
-      setoptionSelected(itemSelected);
-    },
-    []
-  );
+    setQueryParams(`?query=${itemSelected.value}`);
+    setSize(1)
+    setoptionSelected(itemSelected);
+
+    localStorage.setItem("optionSelect", JSON.stringify(itemSelected));
+  }, []);
+
+  const handleScroll:EventListener = (event: any) => {
+      if (
+        window.innerHeight + event.target.documentElement.scrollTop + 1 >=
+        event.target.documentElement.scrollHeight
+    
+      ) {
+        if(document.querySelector('#getMorePosts')){
+          (document.querySelector('#getMorePosts') as HTMLInputElement ).click();
+        }
+      }
+    
+  };
+
+  useEffect(() => {
+    const defaultOption = JSON.parse(
+      localStorage.getItem("optionSelect") || "{}"
+    );
+    if (Object.keys(defaultOption).length === 0) {
+      return;
+    }
+
+    onSelectedChange(defaultOption);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return function cleanupListener() {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -66,10 +103,9 @@ function AllPostPage() {
 
       <PostList posts={currentPosts || []} />
 
+      {isLoadingMore && <SpinnerLoading/>}
 
-      {isLoadingMore && <h1>LOADING...</h1>}
-
-      <button onClick={fetchMore}>Load more</button>
+      <button id="getMorePosts" style={{ display: 'none' }} onClick={fetchMore}>Load more</button>
     </>
   );
 }

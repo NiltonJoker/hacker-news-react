@@ -4,22 +4,18 @@ export const SELECT_OPTIONS = [
   {
     label: "Select your news",
     value: "",
-    icon: "",
   },
   {
     label: "Angular",
     value: "angular",
-    icon: "/assets/angular-icon.png",
   },
   {
     label: "React",
     value: "react",
-    icon: "/assets/react-icon.png",
   },
   {
     label: "Vue",
     value: "vue",
-    icon: "/assets/vue-icon.png",
   },
 ];
 
