@@ -1,3 +1,15 @@
+.post__card {
+  width: 100%;
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: 1fr 68px;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  border: 1px solid #979797;
+  border-radius: 6px;
+}
+
 .post__card:hover {
   opacity: 0.7;
 }

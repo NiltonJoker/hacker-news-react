@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { PostList } from "../components/posts";
-import { CustomSelectedMemorized, SpinnerLoading } from "../components/ui";
+import { CustomSelectedMemorized, SpinnerLoading,MessageNotFoundPosts } from "../components/ui";
 import { BASE_API, SELECT_OPTIONS } from "../utils";
 import { Option } from "../types";
 import useSWRInfinite from "swr/infinite";
@@ -101,9 +101,16 @@ function AllPostPage() {
         />
       </div>
 
-      <PostList posts={currentPosts || []} />
+        {
+          currentPosts.length === 0 &&
+          (
+            <MessageNotFoundPosts/>
+          )
+        }
+  
+        <PostList posts={currentPosts || []} />
 
-      {isLoadingMore && <SpinnerLoading/>}
+        {isLoadingMore && <SpinnerLoading/>}
 
       <button id="getMorePosts" style={{ display: 'none' }} onClick={fetchMore}>Load more</button>
     </>

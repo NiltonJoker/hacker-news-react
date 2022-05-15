@@ -10,14 +10,6 @@ interface Props {
 export const PostList: FC<Props> = ({ posts }) => {
   return (
     <div className="post__container">
-
-      {
-        posts.length === 0 &&
-        (
-          <p className="post__list-message">No hay Posts 😱  </p>
-        )
-      }
-
       {
         posts.map((post, index) => {
           if (
