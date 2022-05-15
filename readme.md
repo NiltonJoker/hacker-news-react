@@ -1,6 +1,6 @@
 # Hacker News | Posts
 
-This project makes use of the Hacker News API to display your posts and be able to add them as favorites.
+This project makes use of the Hacker News API to display posts and be able to add them as favorites.
 
 Using SWR and Infinite Scroll for requests, Context APi for global states and Typescript.
 
